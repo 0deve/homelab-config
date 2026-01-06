@@ -1,0 +1,10 @@
+.env
+immich-data/
+immich-upload/
+jellyfin/
+media/
+uptime-kuma/
+
+website/
+
+.DS_Store
