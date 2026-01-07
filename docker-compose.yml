@@ -77,5 +77,15 @@ services:
     restart: always
     command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
 
+  odv-share:
+    build: ./odv-share/backend
+    container_name: odv-share
+    restart: unless-stopped
+    environment:
+      - UPLOAD_SECRET=${ODV_SHARE_KEY}
+    volumes:
+      - ./odv-share/uploads:/app/uploads
+
+
 volumes:
   model-cache:

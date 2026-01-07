@@ -4,3 +4,5 @@ DB_USERNAME=username
 DB_DATABASE_NAME=name
 DB_PASSWORD=password
 
+ODV_SHARE_KEY=key
+
