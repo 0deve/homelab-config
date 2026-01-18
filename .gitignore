@@ -5,7 +5,10 @@ jellyfin/
 media/
 uptime-kuma/
 odv-share/uploads/
-
+odv-share/
 website/
+alltalk-models/
+my-server-bot/
+venv/
 
 .DS_Store

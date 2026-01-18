@@ -9,6 +9,13 @@ services:
       - ./jellyfin/config:/config
       - ./jellyfin/cache:/cache
       - ./media:/media
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, video]
     restart: unless-stopped
 
   immich-server:
@@ -36,7 +43,26 @@ services:
       - model-cache:/cache
     env_file:
       - .env
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, compute, utility]
     restart: always
+
+  alltalk:
+    container_name: alltalk
+    image: ghcr.io/erew123/alltalk_tts:latest
+    restart: unless-stopped
+    ports:
+      - 7851:7851
+    environment:
+      - AT_QS=true
+      - CUDA_VISIBLE_DEVICES=""
+    volumes:
+      - ./alltalk-models:/alltalk/models
 
   redis:
     container_name: immich_redis
