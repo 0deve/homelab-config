@@ -6,3 +6,5 @@ DB_PASSWORD=password
 
 ODV_SHARE_KEY=key
 
+PIHOLE_WEBPASSWORD=pass
+

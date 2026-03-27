@@ -10,5 +10,9 @@ website/
 alltalk-models/
 my-server-bot/
 venv/
+pihole/
+homepage/
+speedtest-tracker/
+dockge/
 
 .DS_Store
