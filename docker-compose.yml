@@ -158,9 +158,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Europe/Bucharest
+      - APP_KEY=base64:SPEED-TEST-API-KEY
     volumes:
       - ./speedtest-tracker:/config
     restart: unless-stopped
+
 
   dockge:
     image: louislam/dockge:1
