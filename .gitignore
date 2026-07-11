@@ -1,19 +1,21 @@
+# secrets
 .env
-immich-data/
-immich-upload/
-jellyfin/
-media/
-uptime-kuma/
-odv-share/uploads/
-odv-share/
-website/
-alltalk-models/
-my-server-bot/
-venv/
-pihole/
-homepage/
-speedtest-tracker/
-dockge/
-diun/
+**/.env
+
+# runtime data / app state
+dockge/data/
+stacks/adguard/work/
+stacks/adguard/conf/
+stacks/arr-stack/*_config/
+stacks/arr-stack/logs/
+stacks/arr-stack/configs/
+stacks/arr-stack/server/
+stacks/filecodec/html/
+stacks/nginx-proxy-manager/data/
+stacks/nginx-proxy-manager/letsencrypt/
+stacks/stirling-pdf/trainingData/
+stacks/stirling-pdf/extraConfigs/
+stacks/stirling-pdf/customFiles/
+stacks/tailscale/state/
 
 .DS_Store

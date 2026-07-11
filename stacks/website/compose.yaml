@@ -1,0 +1,12 @@
+services:
+  website:
+    image: nginx:alpine
+    container_name: website
+    volumes:
+      - /home/odv/my-server/website:/usr/share/nginx/html:ro
+    restart: always
+    networks:
+      - retea_publica
+networks:
+  retea_publica:
+    external: true

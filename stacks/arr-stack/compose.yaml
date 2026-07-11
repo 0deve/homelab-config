@@ -1,0 +1,163 @@
+services:
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+      - WEBUI_PORT=8080
+    volumes:
+      - ./qbittorrent_config:/config
+      - /data_pool/data/torrents:/data/torrents
+    ports:
+      - 8091:8080
+      - 6881:6881
+      - 6881:6881/udp
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./radarr_config:/config
+      - /data_pool/data:/data
+    ports:
+      - 7878:7878
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./sonarr_config:/config
+      - /data_pool/data:/data
+    ports:
+      - 8989:8989
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./prowlarr_config:/config
+    ports:
+      - 9696:9696
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      - LOG_LEVEL=info
+      - TZ=${TZ}
+    ports:
+      - 8191:8191
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  bazarr:
+    image: lscr.io/linuxserver/bazarr:latest
+    container_name: bazarr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./bazarr_config:/config
+      - /data_pool/data:/data
+    ports:
+      - 6767:6767
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  jellyseerr:
+    image: ghcr.io/seerr-team/seerr:latest
+    container_name: jellyseerr
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./jellyseerr_config:/app/config
+    ports:
+      - 5055:5055
+    restart: unless-stopped
+    networks:
+      - retea_publica
+  recyclarr:
+    image: ghcr.io/recyclarr/recyclarr:latest
+    container_name: recyclarr
+    user: ${PUID}:${PGID}
+    volumes:
+      - ./recyclarr_config:/config
+    environment:
+      - TZ=${TZ}
+    restart: unless-stopped
+    networks:
+      - retea_publica
+#  tdarr:
+#    image: ghcr.io/haveagitgat/tdarr:latest
+#    container_name: tdarr
+#    restart: unless-stopped
+#    networks:
+#      - retea_publica
+#    ports:
+#      - 8265:8265
+#      - 8266:8266
+#    environment:
+#      - TZ=Europe/Bucharest
+#      - serverIP=0.0.0.0
+#      - serverPort=8266
+#      - webUIPort=8265
+#    volumes:
+#      - ./server:/app/server
+#      - ./configs:/app/configs
+#      - ./logs:/app/logs
+#      - /data_pool/data:/data
+#  tdarr-node:
+#    image: ghcr.io/haveagitgat/tdarr_node:latest
+#    container_name: tdarr-node
+#    restart: unless-stopped
+#    networks:
+#      - retea_publica
+#    environment:
+#      - TZ=Europe/Bucharest
+#      - serverIP=tdarr
+#      - serverPort=8266
+#      - nodeName=NodulNvidia
+#      - NVIDIA_VISIBLE_DEVICES=all
+#      - NVIDIA_DRIVER_CAPABILITIES=all
+#    volumes:
+#      - ./server:/app/server
+#      - ./configs:/app/configs
+#      - ./logs:/app/logs
+#      - /data_pool/data:/data
+#    deploy:
+#      resources:
+#        reservations:
+#          devices:
+#            - driver: nvidia
+#              count: 1
+#              capabilities:
+#                - gpu
+#                - video
+networks:
+  retea_publica:
+    external: true

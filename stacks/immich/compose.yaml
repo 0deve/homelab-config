@@ -1,0 +1,67 @@
+services:
+  immich-server:
+    container_name: immich_server
+    image: ghcr.io/immich-app/immich-server:release
+    volumes:
+      - /home/odv/my-server/immich-upload:/usr/src/app/upload
+      - /etc/localtime:/etc/localtime:ro
+      - /data_pool:/usr/src/app/external:ro
+    environment:
+      - IMMICH_MACHINE_LEARNING_ENABLED=false
+      - HOST=0.0.0.0
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,video,utility
+    ports:
+      - 2283:2283
+    depends_on:
+      - redis
+      - database
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities:
+                - gpu
+                - video
+  #  immich-machine-learning:
+  #    container_name: immich_machine_learning
+  #    image: ghcr.io/immich-app/immich-machine-learning:release
+  #    volumes:
+  #      - model-cache:/cache
+  #    restart: always
+
+  #  alltalk:
+  #    container_name: alltalk
+  #    image: ghcr.io/erew123/alltalk_tts:latest
+  #    restart: unless-stopped
+  #    ports:
+  #      - 7851:7851
+  #    environment:
+  #      - AT_QS=true
+  #      - CUDA_VISIBLE_DEVICES=""
+  #    volumes:
+  #      - /home/odv/my-server/alltalk-models:/alltalk/models
+
+  redis:
+    container_name: immich_redis
+    image: redis:6.2-alpine
+    restart: always
+  database:
+    container_name: immich_postgres
+    image: registry.hub.docker.com/tensorchord/pgvecto-rs:pg14-v0.2.0@sha256:90724186f0a3517cf6914295b5ab410db9ce23190a2d9d0b9dd6463e3fa298f0
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_INITDB_ARGS: --data-checksums
+    volumes:
+      - /home/odv/my-server/immich-data:/var/lib/postgresql/data
+    restart: always
+volumes:
+  model-cache: null
+networks:
+  retea_publica:
+    external: true
